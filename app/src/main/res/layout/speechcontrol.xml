@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <org.douxiao.akj_uav.MySurfaceView
+        android:id="@+id/mySurfaceViewVideo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageButton
+        android:id="@+id/ButtonTakePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:background="#00000000"
+        android:src="@drawable/take_pic" />
+    <EditText
+        android:id="@+id/chat_info_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF" />
+
+    <ImageButton
+        android:id="@+id/picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="56dp"
+        android:background="#00000000"
+        android:src="@drawable/picture" />
+
+    <ImageButton
+        android:id="@+id/speech_recognize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#00000000"
+        android:src="@drawable/mic" />
+
+    <ImageButton android:id="@+id/btnLeft"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/btn_left1"/>
+
+    <ImageButton android:id="@+id/btnBack"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/btnLeft"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/btn_back" />
+
+
+
+    <ImageButton android:id="@+id/btnStop"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@id/btnBack"
+        android:layout_above="@id/btnBack"
+        android:src="@drawable/btn_stop"/>
+
+
+    <ImageButton android:id="@+id/btnRight"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/btnLeft"
+        android:layout_toRightOf="@id/btnStop"
+        android:src="@drawable/btn_right" />
+
+
+    <ImageButton android:id="@+id/btnForward"
+        android:background="#00000000"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@id/btnBack"
+        android:layout_above="@id/btnStop"
+        android:src="@drawable/btn_forward"/>
+
+    <ImageButton
+        android:id="@+id/land"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/picture"
+        android:layout_marginTop="18dp"
+        android:background="#00000000"
+        android:src="@drawable/land" />
+
+    <ImageButton
+        android:id="@+id/launch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/land"
+        android:layout_marginTop="14dp"
+        android:background="#00000000"
+        android:src="@drawable/launch" />
+
+</RelativeLayout>

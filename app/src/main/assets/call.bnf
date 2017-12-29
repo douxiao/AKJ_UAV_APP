@@ -1,0 +1,6 @@
+<span style="font-size:14px;"> #BNF+IAT 1.0 UTF-8;
+!grammar call;
+!slot <command>;
+!start <commandStart>;
+<commandStart>:<command>;
+<contact>:起飞|着陆|向前飞|向后飞|向左飞|向右飞|紧急着陆|悬停;</span>  

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string-array name="list_preference">
+            <item>Local</item>
+            <item>Cloud</item>
+            <item>Mix</item>
+        </string-array>
+        <string-array name="list_preference_value">
+            <item>Local</item>
+            <item>Cloud</item>
+            <item>Mix</item>
+        </string-array>
+
+    </resources>

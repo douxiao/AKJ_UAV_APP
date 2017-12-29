@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="pref_screen"
+    android:title="无人机设置" >
+
+    <PreferenceCategory
+        android:key="pref_comm_settings"
+        android:title="服务器设置" >
+        <EditTextPreference
+            android:defaultValue="192.168.1.1:5556"
+            android:key="pref_controlIP_url"
+            android:title="控制IP：端口" />
+        <EditTextPreference
+            android:defaultValue="http://192.168.1.1:5555/?action=stream"
+            android:key="pref_cameraIP_url"
+            android:title="视频流地址" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="语音引擎设置" >
+        <ListPreference
+            android:defaultValue="Local"
+            android:entries="@array/list_preference"
+            android:entryValues="@array/list_preference_value"
+            android:key="pref_speech_settings"
+            android:title="引擎选择" />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
+
+
+
+
