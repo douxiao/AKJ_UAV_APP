@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".speechControl"
+            android:name=".UAVControl"
             android:screenOrientation="landscape"></activity>
         <activity
             android:name=".UAV_Setting"

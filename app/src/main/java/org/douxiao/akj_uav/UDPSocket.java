@@ -20,7 +20,7 @@ public class UDPSocket implements Runnable{
         this.port = port;
     }
     public void run() {
-        // Ïò¾ÖÓòÍøUDP¹ã²¥ÐÅÏ¢
+        // 开启线程发送控制信息
         try {
             InetAddress serverAddress = InetAddress.getByName(ip);
             DatagramSocket s = new DatagramSocket(port);

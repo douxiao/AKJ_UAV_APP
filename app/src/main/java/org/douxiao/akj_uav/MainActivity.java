@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.start:
-                Intent intent1 = new Intent(MainActivity.this, speechControl.class);
+                Intent intent1 = new Intent(MainActivity.this, UAVControl.class);
                 startActivity(intent1);
                 finish();
                 System.exit(0);

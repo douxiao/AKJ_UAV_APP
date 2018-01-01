@@ -17,9 +17,4 @@ public class Speech_Init {
     }
 
 
-
-
-
-
-
 }
