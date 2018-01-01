@@ -1,7 +1,11 @@
 package org.douxiao.akj_uav;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -80,7 +85,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     // // 语记安装助手类
     ApkInstaller mInstaller;
 
-   @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
@@ -107,20 +112,20 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         mInstaller = new ApkInstaller(UAVControl.this); // 用来安装讯飞语记APK
 
         //dummy date, Auto Pilot is not completed.
-       try {
-           drone = new ARDroneAPI();
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-//       mTargetLocation = new Location("target");
-//
-//        mTargetLocation.setLatitude(1.0);
-//        mTargetLocation.setLongitude(1.0);
-//
-//        mCurrentLocation = new Location("cr");
-//
-//        mCurrentLocation.setLatitude(1.0);
-//        mCurrentLocation.setLongitude(1.0);
+        try {
+            drone = new ARDroneAPI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mTargetLocation = new Location("target");
+
+        mTargetLocation.setLatitude(1.0);
+        mTargetLocation.setLongitude(1.0);
+
+        mCurrentLocation = new Location("cr");
+
+        mCurrentLocation.setLatitude(1.0);
+        mCurrentLocation.setLongitude(1.0);
     }
 
 
@@ -145,6 +150,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     public void init_IP() { // 初始化IP地址和端口号
         MySurfaceView.GetCameraIP(Constant.CameraIp_const);// 把视频流地址传递给SurfaceView
     }
+
     private void InitLayout() {
         findViewById(R.id.mySurfaceViewVideo).setOnClickListener(this);
         findViewById(R.id.picture).setOnClickListener(this);// 拍照监听器
@@ -185,7 +191,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                     public void run() {
                         try {
                             drone = new ARDroneAPI();
-                         //   setPilotState(drone.getStatus());
+                            //   setPilotState(drone.getStatus());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -232,36 +238,26 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
             case R.id.btnStop:
                 showTip("悬停");
                 drone.hovering();
-               // setPilotState(drone.getStatus());
+                // setPilotState(drone.getStatus());
                 //   SendCmd(DR_Cmd_Emergency);
                 break;
             case R.id.launch:
                 showTip("起飞");
 //                mStarted = true;
                 drone.takeoff();
-              //  setPilotState(drone.getStatus());
+                //  setPilotState(drone.getStatus());
                 //  SendCmd(DR_Cmd_Launch);
                 break;
             case R.id.land:
                 showTip("着陆");
                 drone.landing();
-              //  setPilotState(drone.getStatus());
-              //  SendCmd(DR_Cmd_Land);
+                //  setPilotState(drone.getStatus());
+                //  SendCmd(DR_Cmd_Land);
             default:
                 break;
         }
     }
 
-////    private void setPilotState(String s) {
-////        EditText textview = (EditText) findViewById(R.id.chat_info_1);
-////        textview.setText(s);
-////    }
-//
-//    // 发送命令
-////    private void SendCmd(String cmd) {
-////        new UDPSocket(cmd, Constant.CtrlIP, Constant.CtrlPort).run();
-////    }
-//
     private void mEngineType_Choice() {
 
         if ((mEngineType.equals(SpeechConstant.TYPE_MIX)) || (mEngineType.equals(SpeechConstant.TYPE_LOCAL))) {
@@ -384,13 +380,13 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 showTip("着陆");
                 drone.landing();
                 break;
-            case "下降。":
+            case "降落。":
                 //  SendCmd(DR_Cmd_Land);
-                showTip("着陆");
+                showTip("降落");
                 drone.landing();
                 break;
             case "起飞。":
-            //    SendCmd(DR_Cmd_Launch);
+                //    SendCmd(DR_Cmd_Launch);
                 showTip("起飞");
                 drone.takeoff();
                 break;
@@ -454,34 +450,95 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-
+    protected void onResume() {
+        super.onResume();
+        startSensors();
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    protected void onPause() {
+        stopSensors();
+        super.onPause();
+    }
+
+    public void stopSensors() {
+        if (mLocationManager != null) {
+            mLocationManager.removeUpdates(this);
+            mLocationManager = null;
+        }
+
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this);
+            mSensorManager = null;
+        }
+    }
+
+
+    public void startSensors() {
+        if (mLocationManager == null) {
+            mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (mLocationManager != null) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        1000 /* minTime ms */,
+                        1 /* minDistance in meters */,
+                        this);
+            }
+        }
+
+
+        if (mSensorManager == null) {
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            if (mSensorManager != null) {
+                mSensorManager.registerListener(this,
+                        mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
+                        , SensorManager.SENSOR_DELAY_NORMAL);
+
+            }
+        }
 
     }
 
-    @Override
     public void onLocationChanged(Location location) {
+        // TODO Auto-generated method stub
+        mCurrentLocation = location;
 
+        Log.d("Drone","Height="+mCurrentLocation.getAltitude());
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
     public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
 
     }
+
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void onSensorChanged(SensorEvent event) {
+        mOrientation = event.values[0];
+    }
+
 
 
 }

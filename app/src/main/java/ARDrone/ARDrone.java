@@ -80,17 +80,15 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.StringTokenizer;
 
 public class ARDrone {
-//    static final int NAVDATA_PORT = 5554;
-//    static final int VIDEO_PORT = 5555;
-//    static final int AT_PORT = 5556;
-//
-//    // NavData offset
+
+    // NavData offset
     static final int NAVDATA_STATE = 4;
     static final int NAVDATA_BATTERY = 24;
     static final int NAVDATA_ALTITUDE = 40;
@@ -159,8 +157,8 @@ public class ARDrone {
         Thread.sleep(INTERVAL);
 
 
-//        NavData nData = new NavData(this, inet_addr);
-//        nData.start();
+        NavData nData = new NavData(this, inet_addr);
+        nData.start();
 
         send_at_cmd("AT*PMODE=" + get_seq() + ",2");
         Thread.sleep(INTERVAL);
@@ -281,80 +279,80 @@ public class ARDrone {
          * String(packet_rcv.getData(),0,packet_rcv.getLength()));
          */
     }
-//
-//    class NavData extends Thread {
-//        DatagramSocket socket_nav;
-//        InetAddress inet_addr;
-//        ARDrone ardrone;
-//
-//        public NavData(ARDrone ardrone, InetAddress inet_addr) throws Exception {
-//            this.ardrone = ardrone;
-//            this.inet_addr = inet_addr;
-//
-//            socket_nav = new DatagramSocket(ARDrone.NAVDATA_PORT);
-//            socket_nav.setSoTimeout(3000);
-//        }
-//
-//        public void run() {
-//            int cnt = 0;
-//
-//            try {
-//                byte[] buf_snd = { 0x01, 0x00, 0x00, 0x00 };
-//                DatagramPacket packet_snd = new DatagramPacket(buf_snd,
-//                        buf_snd.length, inet_addr, ARDrone.NAVDATA_PORT);
-//                socket_nav.send(packet_snd);
-//                System.out.println("Sent trigger flag to UDP port "
-//                        + ARDrone.NAVDATA_PORT);
-//
-//                ardrone.send_at_cmd("AT*CONFIG=" + ardrone.get_seq()
-//                        + ",\"general:navdata_demo\",\"TRUE\"");
-//
-//                byte[] buf_rcv = new byte[10240];
-//                DatagramPacket packet_rcv = new DatagramPacket(buf_rcv,
-//                        buf_rcv.length);
-//
-//                while (true) {
-//                    try {
-//                        ardrone.send_at_cmd("AT*COMWDG=" + ardrone.get_seq());
-//
-//                        socket_nav.receive(packet_rcv);
-//
-//                        cnt++;
-//                        if (cnt >= 5) {
-//                            cnt = 0;
-//                            System.out.println("NavData Received: "
-//                                    + packet_rcv.getLength() + " bytes");
-//                            setFlight_msg("Battery: "
-//                                    + ARDrone.get_int(buf_rcv,
-//                                    ARDrone.NAVDATA_BATTERY)
-//                                    + "%, Altitude: "
-//                                    + ((float) ARDrone.get_int(buf_rcv,
-//                                    ARDrone.NAVDATA_ALTITUDE) / 1000)
-//                                    + "m");
-//                            // System.out.println(ARDrone.byte2hex(buf_rcv, 0,
-//                            // packet_rcv.getLength()));
-//                            setState_flag(1);
-//                            System.out.println("Battery: "
-//                                    + ARDrone.get_int(buf_rcv,
-//                                    ARDrone.NAVDATA_BATTERY)
-//                                    + "%, Altitude: "
-//                                    + ((float) ARDrone.get_int(buf_rcv,
-//                                    ARDrone.NAVDATA_ALTITUDE) / 1000)
-//                                    + "m");
-//                        }
-//                    } catch (SocketTimeoutException ex3) {
-//                        System.out.println("socket_nav.receive(): Timeout");
-//                        setState_flag(0);
-//                    } catch (Exception ex1) {
-//                        ex1.printStackTrace();
-//                    }
-//                }
-//            } catch (Exception ex2) {
-//                ex2.printStackTrace();
-//            }
-//        }
-//    }
-//
+
+    class NavData extends Thread {
+        DatagramSocket socket_nav;
+        InetAddress inet_addr;
+        ARDrone ardrone;
+
+        public NavData(ARDrone ardrone, InetAddress inet_addr) throws Exception {
+            this.ardrone = ardrone;
+            this.inet_addr = inet_addr;
+
+            socket_nav = new DatagramSocket(Constant.NAVDATA_PORT);
+            socket_nav.setSoTimeout(3000);
+        }
+
+        public void run() {
+            int cnt = 0;
+
+            try {
+                byte[] buf_snd = { 0x01, 0x00, 0x00, 0x00 };
+                DatagramPacket packet_snd = new DatagramPacket(buf_snd,
+                        buf_snd.length, inet_addr, Constant.NAVDATA_PORT);
+                socket_nav.send(packet_snd);
+                System.out.println("Sent trigger flag to UDP port "
+                        + Constant.NAVDATA_PORT);
+
+                ardrone.send_at_cmd("AT*CONFIG=" + ardrone.get_seq()
+                        + ",\"general:navdata_demo\",\"TRUE\"");
+
+                byte[] buf_rcv = new byte[10240];
+                DatagramPacket packet_rcv = new DatagramPacket(buf_rcv,
+                        buf_rcv.length);
+
+                while (true) {
+                    try {
+                        ardrone.send_at_cmd("AT*COMWDG=" + ardrone.get_seq());
+
+                        socket_nav.receive(packet_rcv);
+
+                        cnt++;
+                        if (cnt >= 5) {
+                            cnt = 0;
+                            System.out.println("NavData Received: "
+                                    + packet_rcv.getLength() + " bytes");
+                            setFlight_msg("Battery: "
+                                    + ARDrone.get_int(buf_rcv,
+                                    ARDrone.NAVDATA_BATTERY)
+                                    + "%, Altitude: "
+                                    + ((float) ARDrone.get_int(buf_rcv,
+                                    ARDrone.NAVDATA_ALTITUDE) / 1000)
+                                    + "m");
+                            // System.out.println(ARDrone.byte2hex(buf_rcv, 0,
+                            // packet_rcv.getLength()));
+                            setState_flag(1);
+                            System.out.println("Battery: "
+                                    + ARDrone.get_int(buf_rcv,
+                                    ARDrone.NAVDATA_BATTERY)
+                                    + "%, Altitude: "
+                                    + ((float) ARDrone.get_int(buf_rcv,
+                                    ARDrone.NAVDATA_ALTITUDE) / 1000)
+                                    + "m");
+                        }
+                    } catch (SocketTimeoutException ex3) {
+                        System.out.println("socket_nav.receive(): Timeout");
+                        setState_flag(0);
+                    } catch (Exception ex1) {
+                        ex1.printStackTrace();
+                    }
+                }
+            } catch (Exception ex2) {
+                ex2.printStackTrace();
+            }
+        }
+    }
+
 //    class Video extends Thread {
 //        DatagramSocket socket_video;
 //        InetAddress inet_addr;
@@ -364,7 +362,7 @@ public class ARDrone {
 //            this.ardrone = ardrone;
 //            this.inet_addr = inet_addr;
 //
-//            socket_video = new DatagramSocket(ARDrone.VIDEO_PORT);
+//            socket_video = new DatagramSocket(Constant.VIDEO_PORT);
 //            socket_video.setSoTimeout(3000);
 //        }
 //
@@ -372,10 +370,10 @@ public class ARDrone {
 //            try {
 //                byte[] buf_snd = { 0x01, 0x00, 0x00, 0x00 };
 //                DatagramPacket packet_snd = new DatagramPacket(buf_snd,
-//                        buf_snd.length, inet_addr, ARDrone.VIDEO_PORT);
+//                        buf_snd.length, inet_addr, Constant.VIDEO_PORT);
 //                socket_video.send(packet_snd);
 //                System.out.println("Sent trigger flag to UDP port "
-//                        + ARDrone.VIDEO_PORT);
+//                        + Constant.VIDEO_PORT);
 //
 //                ardrone.send_at_cmd("AT*CONFIG=" + ardrone.get_seq()
 //                        + ",\"general:video_enable\",\"TRUE\"");

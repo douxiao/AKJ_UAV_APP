@@ -6,8 +6,7 @@ import org.douxiao.akj_uav.Constant;
 public class ARDroneAPI {
 //
     private ARDrone ardrone;
-//    private String []flag_list = new String[]{"连接成功！","断开成功！","起飞中...","降落中...","向上...","向下...","向右...","向左...","向前...","向后...","悬浮..."};
-//    public static String DRONE_IP  = "192.168.1.1";
+
     public String flag;
 //
     public ARDroneAPI() throws Exception {
