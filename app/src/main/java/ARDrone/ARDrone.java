@@ -76,6 +76,7 @@ Digital keys 1~9: Change speed (rudder rate 5%~99%), 1 is min and 9 is max.
 
 import org.douxiao.akj_uav.Constant;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -263,12 +264,12 @@ public class ARDrone {
 
         new Thread() {
             public void run() {
-//                try {
-////                    socket_at.send(packet_snd);
-//                } catch (IOException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
+                try {
+                    socket_at.send(packet_snd);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }.start();
 

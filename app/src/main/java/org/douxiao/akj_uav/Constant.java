@@ -6,9 +6,9 @@ import android.os.Handler;
 
 public class Constant {
 
-    public static  final int AT_PORT = 5555;
-//    static final int NAVDATA_PORT = 5554;
-//    static final int VIDEO_PORT = 5555;
+    public static  final int AT_PORT = 5556;
+    public static  final int NAVDATA_PORT = 5554;
+    public  static final int VIDEO_PORT = 5555;
 //    static final int AT_PORT = 5556;
 
     public static final String DRONE_IP  = "192.168.1.1";

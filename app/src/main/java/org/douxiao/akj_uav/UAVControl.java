@@ -79,12 +79,8 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     // public String mEngineType = SpeechConstant.TYPE_CLOUD;
     // // 语记安装助手类
     ApkInstaller mInstaller;
-    //  MySurfaceView sfv;
-    // temp用来只让结果显示一次
-    public boolean temp = false;
 
-
-    @Override
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
@@ -111,15 +107,20 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         mInstaller = new ApkInstaller(UAVControl.this); // 用来安装讯飞语记APK
 
         //dummy date, Auto Pilot is not completed.
-        mTargetLocation = new Location("target");
-
-        mTargetLocation.setLatitude(1.0);
-        mTargetLocation.setLongitude(1.0);
-
-        mCurrentLocation = new Location("cr");
-
-        mCurrentLocation.setLatitude(1.0);
-        mCurrentLocation.setLongitude(1.0);
+       try {
+           drone = new ARDroneAPI();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+//       mTargetLocation = new Location("target");
+//
+//        mTargetLocation.setLatitude(1.0);
+//        mTargetLocation.setLongitude(1.0);
+//
+//        mCurrentLocation = new Location("cr");
+//
+//        mCurrentLocation.setLatitude(1.0);
+//        mCurrentLocation.setLongitude(1.0);
     }
 
 
@@ -208,29 +209,29 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 break;
             case R.id.btnForward:
                 showTip("向前飞");
-//                drone.goForward();
+                drone.goForward();
 //                setPilotState(drone.getStatus());
 //			SendCmd(Cmd_ForWard);
                 break;
             case R.id.btnBack:
                 showTip("向后飞");
-//                drone.goBackward();
+                drone.goBackward();
                 // setPilotState(drone.getStatus());
 //			SendCmd(Cmd_BackWard);
                 break;
             case R.id.btnLeft:
                 showTip("向左飞");
-//                drone.rotatel();
+                drone.rotatel();
 //			SendCmd(Cmd_TurnLeft);
                 break;
             case R.id.btnRight:
                 showTip("向右飞");
-//                drone.rotater();
+                drone.rotater();
 //			SendCmd(Cmd_TurnRight);
                 break;
             case R.id.btnStop:
                 showTip("悬停");
-//                drone.hovering();
+                drone.hovering();
                // setPilotState(drone.getStatus());
                 //   SendCmd(DR_Cmd_Emergency);
                 break;
