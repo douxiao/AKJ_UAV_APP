@@ -29,14 +29,14 @@ public class Constant {
     public static String CtrlIP;
     public static int CtrlPort = 0;
 
-    public void init_IP() { // 初始化IP地址和端口号
-        int index = CtrlIP_const.indexOf(":"); // 获取控制IP地址中的":"位置的地址
-        CtrlIP = CtrlIP_const.substring(0, index);
-        String ctrlport = CtrlIP_const.substring(index + 1, CtrlIP_const.length());
-        CtrlPort = Integer.parseInt(ctrlport);// String型转int整形
-        CameraIp = CameraIp_const;
-        MySurfaceView.GetCameraIP(CameraIp);// 把视频流地址传递给SurfaceView
-    }
+//    public void init_IP() { // 初始化IP地址和端口号
+////        int index = CtrlIP_const.indexOf(":"); // 获取控制IP地址中的":"位置的地址
+////        CtrlIP = CtrlIP_const.substring(0, index);
+////        String ctrlport = CtrlIP_const.substring(index + 1, CtrlIP_const.length());
+////        CtrlPort = Integer.parseInt(ctrlport);// String型转int整形
+////        CameraIp = CameraIp_const;
+//        MySurfaceView.GetCameraIP(CameraIp);// 把视频流地址传递给SurfaceView
+//    }
 }
 
 
