@@ -358,31 +358,52 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
             case "向前。":
 //			SendCmd(Cmd_ForWard);
                 showTip("向前飞");
+                drone.goForward();
                 break;
             case "向后。":
 //			SendCmd(Cmd_BackWard);
                 showTip("向后飞");
+                drone.goBackward();
                 break;
             case "向左。":
 //			SendCmd(Cmd_TurnLeft);
                 showTip("向左飞");
+                drone.rotatel();
                 break;
             case "向右。":
 //			SendCmd(Cmd_TurnRight);
                 showTip("向右飞");
+                drone.rotater();
                 break;
             case "紧急着陆。":
                 showTip("紧急着陆");
+                drone.disbleEmergency();
                 break;
             case "着陆。":
                 //  SendCmd(DR_Cmd_Land);
                 showTip("着陆");
+                drone.landing();
+                break;
+            case "下降。":
+                //  SendCmd(DR_Cmd_Land);
+                showTip("着陆");
+                drone.landing();
                 break;
             case "起飞。":
             //    SendCmd(DR_Cmd_Launch);
                 showTip("起飞");
+                drone.takeoff();
                 break;
-
+            case "漆黑。":
+                //    SendCmd(DR_Cmd_Launch);
+                showTip("起飞");
+                drone.takeoff();
+                break;
+            case "悬停。":
+                //    SendCmd(DR_Cmd_Launch);
+                showTip("悬停");
+                drone.hovering();
+                break;
             default:
                 showTip("指令错误：请您重新输入！");
                 break;
