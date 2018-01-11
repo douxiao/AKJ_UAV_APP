@@ -1,7 +1,6 @@
 package org.douxiao.akj_uav;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,7 +52,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
 
     public static String EngineType_const;// 语音引擎值
     public String mEngineType;// 语音引擎
-
     private ARDroneAPI drone;
     private LocationManager mLocationManager;
     private SensorManager mSensorManager;
@@ -101,8 +99,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         }
         setContentView(R.layout.speechcontrol);
         InitLayout(); // 按键的初始化
-//        // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
-//        // 之前这里一直有错误，是因为下面那一句没有声明
         init_IP(); //IP地址初始化
         Speech_Init speech = new Speech_Init(); //实例化
         speech.init_speech(UAVControl.this);// 初始化语音，加载AppId
@@ -133,6 +129,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         Constant.CtrlIP_const = settings.getString(Constant.PREF_CONTROLIP_URL, Constant.DEFAULT_CONTROLIP_Value);// 加载控制地址
         Constant.CameraIp_const = settings.getString(Constant.PREF_CAMERAIP_URL, Constant.DEFAULT_CONTROLIP_Value);// 加载视频流地址
+        Constant.CameraPort_const = settings.getString(Constant.PREF_CAMERA_PORT, Constant.DEFAULT_CAMERAPort_Value);// 加载视频流地址
         EngineType_const = settings.getString(Constant.PREF_SPEECH_SET, Constant.DEFAULT_SPEECH_Value);// 加载语音引擎
         switch (EngineType_const) {
             case "Cloud":
@@ -147,8 +144,14 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         }
     }
 
-    public void init_IP() { // 初始化IP地址和端口号
-        MySurfaceView.GetCameraIP(Constant.CameraIp_const);// 把视频流地址传递给SurfaceView
+    public void init_IP() {
+        int index = Constant.CtrlIP_const.indexOf(":"); // 获取控制IP地址中的":"位置的地址
+        Constant.DRONE_IP = Constant.CtrlIP_const.substring(0, index);
+        String ctrlport = Constant.CtrlIP_const.substring(index + 1, Constant.CtrlIP_const.length());
+        Constant.AT_PORT = Integer.parseInt(ctrlport);// String型转int整形
+        Constant.Video_PORT = Integer.parseInt(Constant.CameraPort_const);
+        Constant.CameraIp = Constant.CameraIp_const;
+        MySurfaceView.GetCameraIP(Constant.CameraIp);// 把视频流地址传递给SurfaceView
     }
 
     private void InitLayout() {
@@ -512,7 +515,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         // TODO Auto-generated method stub
         mCurrentLocation = location;
 
-        Log.d("Drone","Height="+mCurrentLocation.getAltitude());
+        Log.d("Drone", "Height=" + mCurrentLocation.getAltitude());
     }
 
     public void onProviderDisabled(String provider) {
@@ -538,7 +541,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     public void onSensorChanged(SensorEvent event) {
         mOrientation = event.values[0];
     }
-
 
 
 }

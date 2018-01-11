@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class UAV_Setting extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private EditTextPreference mEditTextPreConIpUrl;
     private EditTextPreference mEditTextPreCamIPUrl;
+    private EditTextPreference mEditTextPreCamPort;
     private ListPreference mListPreference;
     String TAG = null;
 
@@ -32,6 +33,8 @@ public class UAV_Setting extends PreferenceActivity implements SharedPreferences
         mEditTextPreConIpUrl = (EditTextPreference) findPreference(Constant.PREF_CONTROLIP_URL);
         // Constant.PREF_CONTROLIP_URL对应的是该编辑框的键值 ，在Xml文件中可以找到
         mEditTextPreCamIPUrl = (EditTextPreference) findPreference(Constant.PREF_CAMERAIP_URL);
+        mEditTextPreCamPort =  (EditTextPreference)findPreference(Constant.PREF_CAMERA_PORT);
+
         mListPreference = (ListPreference) findPreference(Constant.PREF_SPEECH_SET);
     }
 
@@ -46,9 +49,12 @@ public class UAV_Setting extends PreferenceActivity implements SharedPreferences
         mEditTextPreCamIPUrl
                 .setSummary(mSharedPreferences.
                         getString(Constant.PREF_CAMERAIP_URL, Constant.DEFAULT_CAMERAIP_Value));
-
+        mEditTextPreCamPort
+                .setSummary(mSharedPreferences.
+                        getString(Constant.PREF_CAMERA_PORT, Constant.DEFAULT_CAMERAPort_Value) );
         mListPreference.setSummary(mSharedPreferences.
                 getString(Constant.PREF_SPEECH_SET, Constant.DEFAULT_SPEECH_Value));
+
 
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);// 注册
 

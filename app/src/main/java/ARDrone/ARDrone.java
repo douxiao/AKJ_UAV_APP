@@ -93,7 +93,7 @@ public class ARDrone {
     static final int NAVDATA_BATTERY = 24;
     static final int NAVDATA_ALTITUDE = 40;
 //
-    InetAddress inet_addr;
+    InetAddress inet_addr;  //这个是获取网络中的IP地址
     DatagramSocket socket_at;
     int seq = 1; // Send AT command with sequence number 1 will reset the
 //    // counter
@@ -352,7 +352,7 @@ public class ARDrone {
             }
         }
     }
-
+//
 //    class Video extends Thread {
 //        DatagramSocket socket_video;
 //        InetAddress inet_addr;

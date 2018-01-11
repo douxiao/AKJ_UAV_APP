@@ -7,13 +7,18 @@
         android:key="pref_comm_settings"
         android:title="服务器设置" >
         <EditTextPreference
+            android:defaultValue="5555"
+            android:key="pref_camera_port"
+            android:title="视频流端口" />
+        <EditTextPreference
             android:defaultValue="192.168.1.1:5556"
             android:key="pref_controlIP_url"
             android:title="控制IP：端口" />
         <EditTextPreference
-            android:defaultValue="http://192.168.1.1:5555/?action=stream"
+            android:defaultValue="http://192.168.1.1:5555"
             android:key="pref_cameraIP_url"
             android:title="视频流地址" />
+
     </PreferenceCategory>
     <PreferenceCategory android:title="语音引擎设置" >
         <ListPreference
