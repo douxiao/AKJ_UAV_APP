@@ -106,6 +106,13 @@ public class ARDroneAPI {
         }
     }
 
+//    public void send_pcmd(int enable, float pitch, float roll, float gaz,
+//                          float yaw) throws Exception {
+//        System.out.println("Speed: " + speed);
+//        send_at_cmd("AT*PCMD=" + get_seq() + "," + enable + ","
+//                + intOfFloat(pitch) + "," + intOfFloat(roll) + ","
+//                + intOfFloat(gaz) + "," + intOfFloat(yaw));
+//    }
     public void rotater() { //向右偏转
         try {
             ardrone.send_pcmd(1, 0, 0, 0, ardrone.getSpeed());
@@ -115,23 +122,41 @@ public class ARDroneAPI {
         }
     }
 
-    public void goForward() { //前进函数
+    public void forwardMove() { //前进函数
         try {
-            ardrone.send_pcmd(1, ardrone.getSpeed(),0,0,0);
+            ardrone.send_pcmd(1, 0,-ardrone.getSpeed(),0,0);
 //            this.flag = this.flag_list[8];
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    public void backwardMove() { //后退函数
+        try {
+            ardrone.send_pcmd(1, 0,ardrone.getSpeed(),0,0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void goBackward() { //后退函数
+
+    public void rightMove() { //向右函数
         try {
             ardrone.send_pcmd(1, -ardrone.getSpeed(),0,0,0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void leftMove() { //向左函数
+        try {
+            ardrone.send_pcmd(1, ardrone.getSpeed(),0,0,0);
 //            this.flag = this.flag_list[9];
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
 
 }

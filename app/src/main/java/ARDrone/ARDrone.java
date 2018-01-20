@@ -357,54 +357,5 @@ public class ARDrone {
             }
         }
     }
-//
-//    class Video extends Thread {
-//        DatagramSocket socket_video;
-//        InetAddress inet_addr;
-//        ARDrone ardrone;
-//
-//        public Video(ARDrone ardrone, InetAddress inet_addr) throws Exception {
-//            this.ardrone = ardrone;
-//            this.inet_addr = inet_addr;
-//
-//            socket_video = new DatagramSocket(Constant.VIDEO_PORT);
-//            socket_video.setSoTimeout(3000);
-//        }
-//
-//        public void run() {
-//            try {
-//                byte[] buf_snd = { 0x01, 0x00, 0x00, 0x00 };
-//                DatagramPacket packet_snd = new DatagramPacket(buf_snd,
-//                        buf_snd.length, inet_addr, Constant.VIDEO_PORT);
-//                socket_video.send(packet_snd);
-//                System.out.println("Sent trigger flag to UDP port "
-//                        + Constant.VIDEO_PORT);
-//
-//                ardrone.send_at_cmd("AT*CONFIG=" + ardrone.get_seq()
-//                        + ",\"general:video_enable\",\"TRUE\"");
-//
-//                byte[] buf_rcv = new byte[64000];
-//                DatagramPacket packet_rcv = new DatagramPacket(buf_rcv,
-//                        buf_rcv.length);
-//
-//                while (true) {
-//                    try {
-//
-//                        socket_video.receive(packet_rcv);
-//                        System.out.println("Video Received: "
-//                                + packet_rcv.getLength() + " bytes");
-//                        // System.out.println(ARDrone.byte2hex(buf_rcv, 0,
-//                        // packet_rcv.getLength()));
-//                    } catch (SocketTimeoutException ex3) {
-//                        System.out.println("socket_video.receive(): Timeout");
-//                        socket_video.send(packet_snd);
-//                    } catch (Exception ex1) {
-//                        ex1.printStackTrace();
-//                    }
-//                }
-//            } catch (Exception ex2) {
-//                ex2.printStackTrace();
-//            }
-//        }
-//    }
+
 }

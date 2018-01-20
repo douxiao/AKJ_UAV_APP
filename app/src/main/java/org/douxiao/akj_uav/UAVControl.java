@@ -218,16 +218,9 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                     public void run() {
                         try {
                             drone = new ARDroneAPI();
-                            //   setPilotState(drone.getStatus());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-//                        if (null != Constant.handler) {
-//                            Message message = new Message();
-//                            message.what = 1;
-//                            Constant.handler.sendMessage(message);
-//                        }
                     }
                 }).start();
                 break;
@@ -242,44 +235,31 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 break;
             case R.id.btnForward:
                 showTip("向前飞");
-                drone.goForward();
-//                setPilotState(drone.getStatus());
-//			SendCmd(Cmd_ForWard);
+                drone.forwardMove();
                 break;
             case R.id.btnBack:
                 showTip("向后飞");
-                drone.goBackward();
-                // setPilotState(drone.getStatus());
-//			SendCmd(Cmd_BackWard);
+                drone.backwardMove();
                 break;
             case R.id.btnLeft:
                 showTip("向左飞");
-                drone.rotatel();
-//			SendCmd(Cmd_TurnLeft);
+                drone.rightMove();
                 break;
             case R.id.btnRight:
                 showTip("向右飞");
-                drone.rotater();
-//			SendCmd(Cmd_TurnRight);
+                drone.leftMove();
                 break;
             case R.id.btnStop:
                 showTip("悬停");
                 drone.hovering();
-                // setPilotState(drone.getStatus());
-                //   SendCmd(DR_Cmd_Emergency);
                 break;
             case R.id.launch:
                 showTip("起飞");
-//                mStarted = true;
                 drone.takeoff();
-                //  setPilotState(drone.getStatus());
-                //  SendCmd(DR_Cmd_Launch);
                 break;
             case R.id.land:
                 showTip("着陆");
                 drone.landing();
-                //  setPilotState(drone.getStatus());
-                //  SendCmd(DR_Cmd_Land);
             default:
                 break;
         }
@@ -381,22 +361,22 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
             case "向前。":
 //			SendCmd(Cmd_ForWard);
                 showTip("向前飞");
-                drone.goForward();
+                drone.forwardMove();
                 break;
             case "向后。":
 //			SendCmd(Cmd_BackWard);
                 showTip("向后飞");
-                drone.goBackward();
+                drone.backwardMove();
                 break;
             case "向左。":
 //			SendCmd(Cmd_TurnLeft);
                 showTip("向左飞");
-                drone.rotatel();
+                drone.leftMove();
                 break;
             case "向右。":
 //			SendCmd(Cmd_TurnRight);
                 showTip("向右飞");
-                drone.rotater();
+                drone.rightMove();
                 break;
             case "紧急着陆。":
                 showTip("紧急着陆");
