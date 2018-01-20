@@ -2,7 +2,6 @@ package org.douxiao.akj_uav;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
@@ -163,10 +162,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         Constant.DRONE_IP = Constant.CtrlIP_const.substring(0, index);
         String ctrlport = Constant.CtrlIP_const.substring(index + 1, Constant.CtrlIP_const.length());
         Constant.AT_PORT = Integer.parseInt(ctrlport);// String型转int整形
-        Constant.Video_PORT = Integer.parseInt(Constant.CameraPort_const);
-        Constant.CameraIp = Constant.CameraIp_const;
-        MySurfaceView.GetCameraIP(Constant.CameraIp);// 把视频流地址传递给SurfaceView
-
     }
 
     private void videoinit(){
@@ -242,8 +237,8 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 break;
             case R.id.picture:
                 showTip("查看已拍摄的照片");
-                Intent intent = new Intent(UAVControl.this, photograph.class);
-                startActivity(intent);
+//                Intent intent = new Intent(UAVControl.this, photograph.class);
+//                startActivity(intent);
                 break;
             case R.id.btnForward:
                 showTip("向前飞");

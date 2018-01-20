@@ -34,7 +34,7 @@ public class VideoManager implements OnBufferingUpdateListener,
 
         mMediaPlayer = new MediaPlayer(joyActivity);
         try {
-            mMediaPlayer.setDataSource(Constant.url);
+            mMediaPlayer.setDataSource(Constant.CameraIp_const);
         } catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
