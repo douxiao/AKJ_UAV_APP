@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -70,16 +69,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     private boolean mStarted = false;
     private double mOrientation;
 
-    private Drawable ForWardon;
-    private Drawable ForWardoff;
-    private Drawable BackWardon;
-    private Drawable BackWardoff;
-    private Drawable TurnLefton;
-    private Drawable TurnLeftoff;
-    private Drawable TurnRighton;
-    private Drawable TurnRightoff;
-    private Drawable buttonLenon;
-    private Drawable buttonLenoff;
     private EditText chat_info; // 文本编辑框
     private static final String TAG = UAVControl.class.getSimpleName();
     // 语音听写对象
@@ -190,20 +179,11 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         findViewById(R.id.btnStop).setOnClickListener(this);
         findViewById(R.id.land).setOnClickListener(this);
         findViewById(R.id.launch).setOnClickListener(this);
-        ForWardon = getResources().getDrawable(R.drawable.sym_forward_1);
-        ForWardoff = getResources().getDrawable(R.drawable.sym_forward);
+        findViewById(R.id.btnUp).setOnClickListener(this);
+        findViewById(R.id.btnDown).setOnClickListener(this);
+        findViewById(R.id.btnrol).setOnClickListener(this);
+        findViewById(R.id.btnror).setOnClickListener(this);
 
-        TurnLefton = getResources().getDrawable(R.drawable.sym_left_1);
-        TurnLeftoff = getResources().getDrawable(R.drawable.sym_left);
-
-        TurnRighton = getResources().getDrawable(R.drawable.sym_right_1);
-        TurnRightoff = getResources().getDrawable(R.drawable.sym_right);
-
-        BackWardon = getResources().getDrawable(R.drawable.sym_backward_1);
-        BackWardoff = getResources().getDrawable(R.drawable.sym_backward);
-
-        buttonLenon = getResources().getDrawable(R.drawable.sym_light);
-        buttonLenoff = getResources().getDrawable(R.drawable.sym_light_off);
         // 下面的代码是默认混和式听写即有网络或者没有网络都可以的
         // mEngineType = SpeechConstant.TYPE_MIX;
 
@@ -260,6 +240,23 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
             case R.id.land:
                 showTip("着陆");
                 drone.landing();
+                break;
+            case R.id.btnUp:
+                showTip("上升");
+                drone.up();
+                break;
+            case R.id.btnDown:
+                showTip("下降");
+                drone.down();
+                break;
+            case R.id.btnrol:
+                showTip("左转");
+                drone.rotatel();
+                break;
+            case R.id.btnror:
+                showTip("右转");
+                drone.rotater();
+                break;
             default:
                 break;
         }
@@ -393,19 +390,28 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 drone.landing();
                 break;
             case "起飞。":
-                //    SendCmd(DR_Cmd_Launch);
                 showTip("起飞");
                 drone.takeoff();
                 break;
             case "漆黑。":
-                //    SendCmd(DR_Cmd_Launch);
                 showTip("起飞");
                 drone.takeoff();
                 break;
             case "悬停。":
-                //    SendCmd(DR_Cmd_Launch);
                 showTip("悬停");
                 drone.hovering();
+                break;
+            case "上升。":
+                showTip("上升");
+                drone.up();
+                break;
+            case "上说。":
+                showTip("上升");
+                drone.up();
+                break;
+            case "下降。":
+                showTip("下降");
+                drone.down();
                 break;
             default:
                 showTip("指令错误：请您重新输入！");
