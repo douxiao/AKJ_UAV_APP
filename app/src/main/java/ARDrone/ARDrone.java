@@ -92,11 +92,11 @@ public class ARDrone {
     static final int NAVDATA_STATE = 4;
     static final int NAVDATA_BATTERY = 24;
     static final int NAVDATA_ALTITUDE = 40;
-//
+    //
     InetAddress inet_addr;  //这个是获取网络中的IP地址
     DatagramSocket socket_at;
     int seq = 1; // Send AT command with sequence number 1 will reset the
-//    // counter
+    //    // counter
     int seq_last = seq;
     String at_cmd_last = "";
     float speed = (float) 0.1;
@@ -107,18 +107,22 @@ public class ARDrone {
     public int state_flag = 0;
     public String flight_msg = "";
 
-    public void setState_flag(int s){
+    public void setState_flag(int s) {
         this.state_flag = s;
     }
-    public int getState_flag(){
+
+    public int getState_flag() {
         return state_flag;
     }
-    public void setFlight_msg(String s){
+
+    public void setFlight_msg(String s) {
         this.flight_msg = s;
     }
-    public String getFlight_msg(){
+
+    public String getFlight_msg() {
         return flight_msg;
     }
+
     public float getSpeed() {
         return speed;
     }
@@ -188,8 +192,9 @@ public class ARDrone {
         // Thread.sleep(INTERVAL);
         send_at_cmd("AT*CONFIG=" + get_seq() + ",\"pic:ultrasound_freq\",\"8\"");
         Thread.sleep(INTERVAL);
+        send_at_cmd("AT*CONFIG=" + get_seq() + ",\"video:video_codec\",\"128\"");
         // send_at_cmd("AT*FTRIM=" + get_seq()); //flat trim
-        // Thread.sleep(INTERVAL);
+        Thread.sleep(INTERVAL);
 
         send_at_cmd("AT*REF=" + get_seq() + ",290717696");
         Thread.sleep(INTERVAL);
@@ -297,7 +302,7 @@ public class ARDrone {
             int cnt = 0;
 
             try {
-                byte[] buf_snd = { 0x01, 0x00, 0x00, 0x00 };
+                byte[] buf_snd = {0x01, 0x00, 0x00, 0x00};
                 DatagramPacket packet_snd = new DatagramPacket(buf_snd,
                         buf_snd.length, inet_addr, Constant.NAVDATA_PORT);
                 socket_nav.send(packet_snd);

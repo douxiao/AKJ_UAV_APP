@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -18,12 +19,16 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -42,17 +47,23 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import ARDrone.ARDrone;
 import ARDrone.ARDroneAPI;
 import speech.ApkInstaller;
 import speech.JsonParser;
 import speech.Speech_Init;
+import videoview.VideoManager;
 
-public class UAVControl extends AppCompatActivity implements LocationListener, SensorEventListener, View.OnClickListener {
+public class UAVControl extends AppCompatActivity implements LocationListener, SensorEventListener, View.OnClickListener,SurfaceHolder.Callback {
 
+    public SurfaceHolder holder;
+    VideoManager mVideo;
+    public DisplayMetrics metrics;
 
     public static String EngineType_const;// 语音引擎值
     public String mEngineType;// 语音引擎
     private ARDroneAPI drone;
+    private ARDrone ardrone;
     private LocationManager mLocationManager;
     private SensorManager mSensorManager;
     private Location mCurrentLocation;
@@ -82,6 +93,8 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     // public String mEngineType = SpeechConstant.TYPE_CLOUD;
     // // 语记安装助手类
     ApkInstaller mInstaller;
+    VideoView videoView;
+    boolean isRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +113,7 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         setContentView(R.layout.speechcontrol);
         InitLayout(); // 按键的初始化
         init_IP(); //IP地址初始化
+        videoinit();
         Speech_Init speech = new Speech_Init(); //实例化
         speech.init_speech(UAVControl.this);// 初始化语音，加载AppId
         mIat = SpeechRecognizer.createRecognizer(UAVControl.this, mInitListener);
@@ -152,10 +166,25 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         Constant.Video_PORT = Integer.parseInt(Constant.CameraPort_const);
         Constant.CameraIp = Constant.CameraIp_const;
         MySurfaceView.GetCameraIP(Constant.CameraIp);// 把视频流地址传递给SurfaceView
+
     }
 
+    private void videoinit(){
+
+        mVideo = new VideoManager(this);
+        SurfaceView mPreview = (SurfaceView) findViewById(R.id.surface);
+        holder = mPreview.getHolder();
+        holder.addCallback(this);
+        holder.setFormat(PixelFormat.RGBA_8888);//设置播放的清晰度（像素格式）
+        metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+    }
+
+
     private void InitLayout() {
-        findViewById(R.id.mySurfaceViewVideo).setOnClickListener(this);
+//        findViewById(R.id.videoView).setOnClickListener(this);  //用来显示视频流
+//        findViewById(R.id.mySurfaceViewVideo).setOnClickListener(this);
         findViewById(R.id.picture).setOnClickListener(this);// 拍照监听器
         findViewById(R.id.ButtonTakePic).setOnClickListener(this);// 设置Sys_setting的监听器
         findViewById(R.id.speech_recognize).setOnClickListener(this);// 设置语言识别的按钮
@@ -454,16 +483,23 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
 
     @Override
     protected void onResume() {
+        mVideo.playVideo();
         super.onResume();
         startSensors();
     }
 
     @Override
     protected void onPause() {
+        mVideo.releaseMediaPlayer();
         stopSensors();
         super.onPause();
     }
-
+    @Override
+    protected void onDestroy() {
+        mVideo.releaseMediaPlayer();
+        this.finish();
+        super.onDestroy();
+    }
     public void stopSensors() {
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
@@ -543,4 +579,18 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     }
 
 
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
 }

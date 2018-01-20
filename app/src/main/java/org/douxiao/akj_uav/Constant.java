@@ -19,10 +19,11 @@ public class Constant{
     public static final String PREF_SPEECH_SET = "pref_speech_settings";
 
     public static String DEFAULT_CONTROLIP_Value = "192.168.1.1:5556";// 默认的控制IP：地址
-    public static String DEFAULT_CAMERAIP_Value = "http://192.168.1.1:5555";// 默认的视频流地址
+    public static String DEFAULT_CAMERAIP_Value = "tcp://192.168.1.1:5555";// 默认的视频流地址
     public static String DEFAULT_CAMERAPort_Value = "5555";// 默认的视频流端口
     public static String DEFAULT_SPEECH_Value = "Local";//// 默认的语音引擎
 
+    public static String url = "tcp://192.168.1.1:5555";// 默认的视频流地址
 
     public static Context context;
     public static Handler handler = null;

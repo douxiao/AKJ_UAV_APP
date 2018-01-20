@@ -15,7 +15,7 @@
             android:key="pref_controlIP_url"
             android:title="控制IP：端口" />
         <EditTextPreference
-            android:defaultValue="http://192.168.1.1:5555"
+            android:defaultValue="tcp://192.168.1.1:5555"
             android:key="pref_cameraIP_url"
             android:title="视频流地址" />
 
