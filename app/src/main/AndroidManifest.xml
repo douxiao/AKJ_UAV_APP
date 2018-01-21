@@ -61,7 +61,7 @@
             android:name=".UAV_Setting"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"></activity>
         <activity
-            android:name=".photograph"
+            android:name="videoview.PhotoShow"
             android:label="拍摄的照片"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog"></activity>

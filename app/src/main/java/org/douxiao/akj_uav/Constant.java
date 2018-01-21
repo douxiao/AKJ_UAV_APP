@@ -25,7 +25,7 @@ public class Constant{
 
     public static String url = "tcp://192.168.1.1:5555";// 默认的视频流地址
 
-    public static Context context;
+    public static Context context;        //用来传递活动
     public static Handler handler = null;
     public static String CameraPort_const; //视频流端口
     public static String CameraIp_const; //视频流地址

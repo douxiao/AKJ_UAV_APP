@@ -20,9 +20,9 @@ import io.vov.vitamio.MediaPlayer.OnVideoSizeChangedListener;
 public class VideoManager implements OnBufferingUpdateListener,
         OnCompletionListener, OnPreparedListener, OnVideoSizeChangedListener {
 
-    MediaPlayer mMediaPlayer;
+    public MediaPlayer mMediaPlayer;
     UAVControl joyActivity;
-    private String TAG = "Fcking NOTIF";
+    public String TAG = "Fcking NOTIF";
 
     public VideoManager(UAVControl joy) {
         joyActivity = joy;

@@ -2,6 +2,7 @@ package org.douxiao.akj_uav;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
@@ -26,7 +27,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -45,11 +45,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import ARDrone.ARDrone;
 import ARDrone.ARDroneAPI;
 import speech.ApkInstaller;
 import speech.JsonParser;
 import speech.Speech_Init;
+import videoview.PhotoSaver;
+import videoview.PhotoShow;
 import videoview.VideoManager;
 
 public class UAVControl extends AppCompatActivity implements LocationListener, SensorEventListener, View.OnClickListener,SurfaceHolder.Callback {
@@ -61,7 +62,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     public static String EngineType_const;// 语音引擎值
     public String mEngineType;// 语音引擎
     private ARDroneAPI drone;
-    private ARDrone ardrone;
     private LocationManager mLocationManager;
     private SensorManager mSensorManager;
     private Location mCurrentLocation;
@@ -81,8 +81,6 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     // public String mEngineType = SpeechConstant.TYPE_CLOUD;
     // // 语记安装助手类
     ApkInstaller mInstaller;
-    VideoView videoView;
-    boolean isRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,19 +154,18 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     private void videoinit(){
 
         mVideo = new VideoManager(this);
-        SurfaceView mPreview = (SurfaceView) findViewById(R.id.surface);
+        SurfaceView mPreview = (SurfaceView) findViewById(R.id.surfaceview);
         holder = mPreview.getHolder();
         holder.addCallback(this);
         holder.setFormat(PixelFormat.RGBA_8888);//设置播放的清晰度（像素格式）
         metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+       getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
     }
 
 
     private void InitLayout() {
-//        findViewById(R.id.videoView).setOnClickListener(this);  //用来显示视频流
-//        findViewById(R.id.mySurfaceViewVideo).setOnClickListener(this);
+        findViewById(R.id.surfaceview).setOnClickListener(this);
         findViewById(R.id.picture).setOnClickListener(this);// 拍照监听器
         findViewById(R.id.ButtonTakePic).setOnClickListener(this);// 设置Sys_setting的监听器
         findViewById(R.id.speech_recognize).setOnClickListener(this);// 设置语言识别的按钮
@@ -193,16 +190,12 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
     public void onClick(View v) {// 用来监听此活动下的按键
         switch (v.getId()) {
             case R.id.ButtonTakePic:
-                new Thread(new Runnable() {// 这里拍照开启一个新的线程,这里要学会这种开启新的线程的方法
-                    @Override
-                    public void run() {
-                        try {
-                            drone = new ARDroneAPI();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                try {
+                    new PhotoSaver(this,mVideo.mMediaPlayer).record();
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "error PhotoSaver",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.speech_recognize:
                 mEngineType_Choice();
@@ -210,8 +203,8 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 break;
             case R.id.picture:
                 showTip("查看已拍摄的照片");
-//                Intent intent = new Intent(UAVControl.this, photograph.class);
-//                startActivity(intent);
+                Intent intent = new Intent(UAVControl.this, PhotoShow.class);
+                startActivity(intent);
                 break;
             case R.id.btnForward:
                 showTip("向前飞");
