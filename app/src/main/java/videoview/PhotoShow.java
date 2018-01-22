@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -82,7 +83,7 @@ public class PhotoShow extends AppCompatActivity  implements
 
         List<String> it = new ArrayList<String>();
 
-        File f = new File("/sdcard/demo/");
+        File f = new File(Environment.getExternalStorageDirectory()+ "/Pictures/");
         File[] files = f.listFiles();
         for (int i = 0; i < files.length; i++) {
             File file = files[i];

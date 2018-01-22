@@ -2,7 +2,6 @@ package org.douxiao.akj_uav;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
@@ -50,7 +49,6 @@ import speech.ApkInstaller;
 import speech.JsonParser;
 import speech.Speech_Init;
 import videoview.PhotoSaver;
-import videoview.PhotoShow;
 import videoview.VideoManager;
 
 public class UAVControl extends AppCompatActivity implements LocationListener, SensorEventListener, View.OnClickListener,SurfaceHolder.Callback {
@@ -202,9 +200,9 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
                 startSpeech();
                 break;
             case R.id.picture:
-                showTip("查看已拍摄的照片");
-                Intent intent = new Intent(UAVControl.this, PhotoShow.class);
-                startActivity(intent);
+                showTip("查看已拍摄的照片");//待开发功能
+//                Intent intent = new Intent(UAVControl.this, PhotoShow.class);
+//                startActivity(intent);
                 break;
             case R.id.btnForward:
                 showTip("向前飞");

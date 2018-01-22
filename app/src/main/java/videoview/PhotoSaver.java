@@ -30,6 +30,8 @@ public class PhotoSaver {
         this.mMediaPlayer = m;
         rightNow = Calendar.getInstance();
         filename = rightNow.get(Calendar.DAY_OF_MONTH) + "_" + (rightNow.get(Calendar.MONTH) + 1) + "_" + rightNow.get(Calendar.YEAR) + ".jpeg";
+
+
     }
 
     /**
@@ -71,6 +73,7 @@ public class PhotoSaver {
         //Create a media file name
         File mediaFile;
         imgname = Environment.getExternalStorageDirectory() + "/Pictures/" + finalname;
+       // imgname = Environment.getExternalStorageDirectory() + "/Pictures/" + "snapshot" + System.currentTimeMillis() + ".jpeg";
         mediaFile = new File(imgname);
         return mediaFile;
     }
