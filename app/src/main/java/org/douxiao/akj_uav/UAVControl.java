@@ -346,6 +346,14 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
         // Toast.LENGTH_SHORT).show();
         String message_voice = chat_info.getText().toString();
         switch (message_voice) {
+            case "拍照。":
+                try {
+                    new PhotoSaver(this,mVideo.mMediaPlayer).record();
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "error PhotoSaver",Toast.LENGTH_SHORT).show();
+                }
+                break;
             case "向前。":
 //			SendCmd(Cmd_ForWard);
                 showTip("向前飞");
@@ -403,6 +411,14 @@ public class UAVControl extends AppCompatActivity implements LocationListener, S
             case "下降。":
                 showTip("下降");
                 drone.down();
+                break;
+            case "左转":
+                showTip("左转");
+                drone.rotatel();
+                break;
+            case "右转":
+                showTip("右转");
+                drone.rotater();
                 break;
             default:
                 showTip("指令错误：请您重新输入！");
